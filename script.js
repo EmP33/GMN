@@ -14,6 +14,8 @@ const getRandomNumber = function () {
 let puncation = Number(score.textContent);
 let highest = Number(highscore.textContent);
 
+let isGame = true;
+
 let randomNumber = getRandomNumber();
 
 again.addEventListener('click', () => {
@@ -36,17 +38,20 @@ const checkingQuess = function (quess, event) {
     message.textContent = '🤘 Correct Number';
     document.body.style.background = '#76B947';
     check.setAttribute('disabled', true);
+    isGame = false;
     if (puncation > highest) {
       highest = puncation;
       highscore.textContent = puncation;
     }
-    setTimeout(reset, 3000);
   } else if (puncation === 0) {
     number.textContent = quess;
     message.textContent = '❌ You lose! ❌';
     document.body.style.background = '#F51720';
     check.setAttribute('disabled', true);
-  } else {
+  } else if (!quess && isGame) {
+    message.textContent = 'Choose number between: 1-20';
+  } else if (quess !== randomNumber && isGame === false) {
+  } else if (quess !== randomNumber) {
     if (quess > randomNumber) {
       message.textContent = 'too high...';
     } else {
@@ -65,6 +70,7 @@ const reset = function () {
   check.removeAttribute('disabled');
   score.textContent = '20';
   puncation = 20;
+  isGame = true;
   quess.value = '';
 };
 
